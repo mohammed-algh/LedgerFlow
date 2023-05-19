@@ -86,7 +86,7 @@ class FixedAssetManagement(QWidget):
         except ValueError as e:
             QMessageBox.warning(self, "Invalid ID", str(e))
         except Exception as e:
-            QMessageBox.warning(self, "Asset Not Found", "There is no asset with given ID.")
+            QMessageBox.warning(self, "Asset Not Found", "There is no asset with the given ID.")
 
         
 
@@ -115,7 +115,7 @@ class FixedAssetManagement(QWidget):
         except ValueError as e:
             QMessageBox.warning(self, "Invalid ID", str(e))
         except Exception as e:
-            QMessageBox.warning(self, "Asset Not Found", "There is no asset with given ID.")
+            QMessageBox.warning(self, "Asset Not Found", "There is no asset with the given ID.")
 
     def print_report(self, config) -> None:
         """Generate and print a PDF report of all fixed assets and their depreciation."""
