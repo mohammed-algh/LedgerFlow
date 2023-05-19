@@ -36,6 +36,7 @@ class FixedAssetManagement(QWidget):
             ui.Asset_List.setColumnWidth(5, 30)  # Life years column width
         except Exception as e:
                 QMessageBox.warning(self, "Invalid Refresh", "Asset table is empty.")
+
     def add_asset(self, name: str, purchase_price: float, salvage_value: float,
                   life_years: int, purchase_date: str) -> None:
         """Add a fixed asset."""
@@ -43,7 +44,7 @@ class FixedAssetManagement(QWidget):
             QMessageBox.warning(self, "Missing Input", "Please provide a name for the asset.")
         elif datetime.datetime.strptime(purchase_date, "%Y-%m-%d").date() > datetime.date.today():
             QMessageBox.warning(self, "Invalid Date", "Date cannot be in the future.")
-        elif purchase_price <= 0 or salvage_value <= 0:
+        elif purchase_price <= 0 or salvage_value <= 0 or life_years <= 0:
             QMessageBox.warning(self, "Invalid Amount", "price or salvage value must be greater than zero.")
         else:
             asset = {"name": name,
@@ -74,18 +75,23 @@ class FixedAssetManagement(QWidget):
             return None
         purchase_date = datetime.datetime.strptime(asset["purchase_date"], "%Y-%m-%d").date()
         years = (datetime.date.today() - purchase_date).days / 365
-        depreciation = (asset["purchase_price"] / asset["life_years"]) * years
+        depreciation = (asset["purchase_price"] / float(asset["life_years"])) * years
         return round(depreciation)
 
     def print_report(self, config) -> None:
         """Generate and print a PDF report of all fixed assets and their depreciation."""
+    
         html = "<h1>Fixed Asset Management Report</h1>\n"
         html += "<h2>Fixed Assets</h2>\n"
         assets = self.load_from_database()
         for asset in assets:
             html += f"<p><b>ID:</b> {asset['id']}<br><b>Name:</b> {asset['name']}<br><b>Purchase Date:</b> {asset['purchase_date']}<br><b>Purchase Price:</b> ${asset['purchase_price']}<br><b>Salvage Value:</b> ${asset['salvage_value']}<br><b>Life (years):</b> {asset['life_years']}<br><b>Total Depreciation:</b> ${self.get_total_depreciation(asset['id'])}</p>\n"
         pdfkit.from_string(html, 'fixed_asset_report.pdf', configuration=config)
-
+        try:
+            subprocess.run(['start', '', 'fixed_asset_report.pdf'], shell=True)
+        except:
+            print(f"Unable to open the PDF file: {'fixed_asset_report.pdf'}")
+       
     def save_to_database(self, fixed_asset) -> None:
         """Save all fixed_assets to the database."""
         conn = sqlite3.connect('ledgerflow.db')

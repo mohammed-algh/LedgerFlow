@@ -96,9 +96,9 @@ if __name__ == "__main__":
         ui.date_field_Asset.date().toString("yyyy-MM-dd")),
         )
     #Refresh Table
-    ui.asset_refresh_Button.clicked.connect(lambda: print(FixedAssetManagement().update_table(ui)))
+    ui.asset_refresh_Button.clicked.connect(lambda: FixedAssetManagement().update_table(ui))
     #Generate a Report
-    ui.print_Asset_Button.clicked.connect(lambda: print(FixedAssetManagement().get_assets()))
+    ui.print_Asset_Button.clicked.connect(lambda: FixedAssetManagement().print_report(config))
 
 
     # Create the model
@@ -129,7 +129,7 @@ if __name__ == "__main__":
         ui.Asset_List.setColumnWidth(4, 70)  # Sal_val column width
         ui.Asset_List.setColumnWidth(5, 30)  # Life years column width
     except Exception as e:
-            print("Table is empty")
+            None
 
 
     MainWindow.show()
