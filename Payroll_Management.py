@@ -79,7 +79,7 @@ class PayrollManagement(QWidget):
         employees = self.load_from_database()
 
         for employee in employees:
-            if employee["id"] == id:
+            if employee["id"] == int(id):
                 return employee
         return None
     
