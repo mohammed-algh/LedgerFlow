@@ -3,7 +3,7 @@ from Income_Expense_Tracking import IncomeExpenseTracking
 from Payroll_Management import PayrollManagement
 from Tax_Management import TaxManagement
 from Fixed_Asset_Management import FixedAssetManagement
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from layout import Ui_MainWindow
 config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf/bin/wkhtmltopdf.exe')
@@ -151,7 +151,6 @@ if __name__ == "__main__":
     #################################################################################
     
     # Create the table
-    numb = 15.0
     try:
         model = QStandardItemModel()
         model.setColumnCount(5)
@@ -186,6 +185,14 @@ if __name__ == "__main__":
 
     #Generate Tax Report
     ui.print_tax_Button.clicked.connect(lambda: TaxManagement(ui.tax_rate.value()).print_report(config))
+
+
+    ################################################################################
+    ############################## Payroll Management ##############################
+    ################################################################################
+    
+
+
     #############################################################################
     ############################## Show MainWindow ##############################
     #############################################################################
