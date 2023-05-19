@@ -224,10 +224,10 @@ if __name__ == "__main__":
     ui.add_emp_Button.clicked.connect(lambda: PayrollManagement().add_employee(ui.name_emp_field.text(), ui.employee_sal_field.value(),ui.employee_s_date.date().toString("yyyy-MM-dd")))
     
     #Delete an employee
-    ui.remove_emp_Button.clicked.connect(lambda: PayrollManagement().terminate_employee(ui.name_emp_field.text()))
+    ui.remove_emp_Button.clicked.connect(lambda: PayrollManagement().terminate_employee(ui.employee_ID_field.text()))
 
     #Search for an employee
-    ui.search_emp_Button.clicked.connect(lambda: PayrollManagement().get_employee(ui.name_emp_field.text()))
+    ui.search_emp_Button.clicked.connect(lambda: PayrollManagement().get_employee_to_print(ui,ui.employee_ID_field.text()))
     
     #Refresh the employees list
     ui.refresh_emp_Button.clicked.connect(lambda: PayrollManagement().update_table(ui))

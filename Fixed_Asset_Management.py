@@ -80,7 +80,6 @@ class FixedAssetManagement(QWidget):
             ui.price_field_Asset.setValue(float(searched_asset["purchase_price"]))
             ui.sal_val_field_Asset.setValue(float(searched_asset["salvage_value"]))
             ui.year_field_Asset.setValue(float(searched_asset["life_years"]))
-            ui.date_field_Asset.date().toString("yyyy-MM-dd")
             date = QDate.fromString(searched_asset["purchase_date"], "yyyy-MM-dd")
             ui.date_field_Asset.setDate(date)
         except ValueError as e:
