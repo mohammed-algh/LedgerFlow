@@ -123,7 +123,7 @@ class FixedAssetManagement(QWidget):
                 html += f"<p><b>ID:</b> {asset['id']}<br><b>Name:</b> {asset['name']}<br><b>Purchase Date:</b> {asset['purchase_date']}<br><b>Purchase Price:</b> ${asset['purchase_price']}<br><b>Salvage Value:</b> ${asset['salvage_value']}<br><b>Life (years):</b> {asset['life_years']}<br><b>Total Depreciation:</b> ${self.get_total_depreciation(asset['id'])}</p>\n"
             pdfkit.from_string(html, 'fixed_asset_report.pdf', configuration=config)
             try:
-                subprocess.run(['start', '', 'income_expense_report.pdf'], shell=True)
+                subprocess.run(['start', '', 'fixed_asset_report.pdf'], shell=True)
             except:
                 QMessageBox.warning(self, "Failed Open Report", "Report cannot be opened.")
         except Exception as e:
