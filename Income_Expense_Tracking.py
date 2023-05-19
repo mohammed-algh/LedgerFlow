@@ -285,7 +285,7 @@ class IncomeExpenseTracking(QWidget):
             try:
                 subprocess.run(['start', '', 'income_expense_report.pdf'], shell=True)
             except:
-                print(f"Unable to open the PDF file: {'income_expense_report.pdf'}")
+                QMessageBox.warning(self, "Failed Open Report", "Report cannot be opened.")
         except Exception as e:
             QMessageBox.warning(self, "Report Generation", "No transactions to be generated.")
     def save_to_database(self, transaction) -> None:
