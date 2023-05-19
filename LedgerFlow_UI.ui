@@ -23,7 +23,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="page_1">
          <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -904,9 +904,15 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="price_field_Asset">
+                       <widget class="QDoubleSpinBox" name="price_field_Asset">
+                        <property name="accelerated">
+                         <bool>true</bool>
+                        </property>
                         <property name="maximum">
-                         <number>999999999</number>
+                         <double>999999999.990000009536743</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>500.000000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -930,9 +936,15 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="sal_val_field_Asset">
+                       <widget class="QDoubleSpinBox" name="sal_val_field_Asset">
+                        <property name="accelerated">
+                         <bool>true</bool>
+                        </property>
                         <property name="maximum">
-                         <number>999999999</number>
+                         <double>999999999.990000009536743</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>50.000000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -956,9 +968,15 @@
                        </widget>
                       </item>
                       <item>
-                       <widget class="QSpinBox" name="year_field_Asset">
+                       <widget class="QDoubleSpinBox" name="year_field_Asset">
+                        <property name="accelerated">
+                         <bool>true</bool>
+                        </property>
                         <property name="maximum">
-                         <number>999999999</number>
+                         <double>999999999.990000009536743</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -1068,16 +1086,27 @@
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_20">
                   <item>
-                   <widget class="QListView" name="Asset_List"/>
+                   <widget class="QTableView" name="Asset_List">
+                    <attribute name="verticalHeaderVisible">
+                     <bool>false</bool>
+                    </attribute>
+                   </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="print_Asset_Button">
+                   <widget class="QPushButton" name="asset_refresh_Button">
                     <property name="text">
-                     <string>Print</string>
+                     <string>Refresh</string>
                     </property>
                    </widget>
                   </item>
                  </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="print_Asset_Button">
+                  <property name="text">
+                   <string>Generate Report</string>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_18">
