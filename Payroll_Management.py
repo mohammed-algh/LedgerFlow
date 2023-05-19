@@ -52,17 +52,24 @@ class PayrollManagement(QWidget):
 
     def terminate_employee(self, id: str) -> bool:
         """Remove a employees from the database using its ID."""
-        employee_id = int(id)
-        with sqlite3.connect('ledgerflow.db') as conn:
-            cursor = conn.cursor()
-            cursor.execute("DELETE FROM employees WHERE id = ?", (employee_id,))
-            if cursor.rowcount == 0:
-                conn.commit()
-                QMessageBox.warning(self, "Employee Termination Failed!", "Employee ID does not exist.")
-                return True
-            else:
-                QMessageBox.information(self, "Employee Fired!", "Employee was fired successfully.")
-                return False
+        try:
+            if not id:
+                raise ValueError("ID field is empty")
+            employee_id = int(id)
+            with sqlite3.connect('ledgerflow.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM employees WHERE id = ?", (employee_id,))
+                if cursor.rowcount == 0:
+                    conn.commit()
+                    QMessageBox.warning(self, "Employee Termination Failed!", "Employee ID does not exist.")
+                    return True
+                else:
+                    QMessageBox.information(self, "Employee Fired!", "Employee was fired successfully.")
+                    return False
+        except ValueError as e:
+            QMessageBox.warning(self, "Invalid ID", str(e))
+        except Exception as e:
+            QMessageBox.warning(self, "Employee Not Found", "There is no employee with the given ID.")
 
     def get_employees(self):
         """Return a list of all employees."""

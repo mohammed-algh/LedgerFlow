@@ -125,16 +125,23 @@ class IncomeExpenseTracking(QWidget):
 
     def remove_transaction(self, transaction_id: int) -> bool:
         """Remove a transaction from the ledger using its ID."""
-        with sqlite3.connect('ledgerflow.db') as conn:
-            cursor = conn.cursor()
-            cursor.execute("DELETE FROM transactions WHERE id = ?", (transaction_id,))
-            if cursor.rowcount == 0:
-                conn.commit()
-                QMessageBox.warning(self, "Transaction Removal Failed!", "Transaction ID does not exist.")
-                return True
-            else:
-                QMessageBox.information(self, "Transaction Removed!", "Transaction was removed successfully.")
-                return False
+        try:
+            if not transaction_id:
+                raise ValueError("ID field is empty")
+            with sqlite3.connect('ledgerflow.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM transactions WHERE id = ?", (transaction_id,))
+                if cursor.rowcount == 0:
+                    conn.commit()
+                    QMessageBox.warning(self, "Transaction Removal Failed!", "Transaction ID does not exist.")
+                    return True
+                else:
+                    QMessageBox.information(self, "Transaction Removed!", "Transaction was removed successfully.")
+                    return False
+        except ValueError as e:
+            QMessageBox.warning(self, "Invalid ID", str(e))
+        except Exception as e:
+            QMessageBox.warning(self, "Transaction Not Found", "There is no transaction with the given ID.")
 
     def get_income(self) -> List[Dict]:
         """Return a list of all income transactions."""
