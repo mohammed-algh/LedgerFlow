@@ -116,6 +116,7 @@ if __name__ == "__main__":
         ui.Asset_List.setColumnWidth(5, 30)  # Life years column width
     except Exception as e:
             None
+
     #Add a new transaction
     ui.add_Asset_Button.clicked.connect(lambda: FixedAssetManagement().add_asset(
         ui.name_field_Asset.text(),
@@ -124,12 +125,18 @@ if __name__ == "__main__":
         ui.year_field_Asset.value(),
         ui.date_field_Asset.date().toString("yyyy-MM-dd")),
         )
+    
     #Search for an Asset
-    ui.search_Asset_Button.clicked.connect(lambda: FixedAssetManagement().get_asset(ui,int(ui.ID_field_Asset.text())))
+    ui.search_Asset_Button.clicked.connect(lambda: FixedAssetManagement().get_asset_to_print(ui,ui.ID_field_Asset.text()))
+
     #Refresh Table
     ui.asset_refresh_Button.clicked.connect(lambda: FixedAssetManagement().update_table(ui))
+
     #Generate a Report
     ui.print_Asset_Button.clicked.connect(lambda: FixedAssetManagement().print_report(config))
+
+    #Search a Depreciation by ID
+    ui.dep_search_Button.clicked.connect(lambda: FixedAssetManagement().get_one_asset_depreciation_to_print(ui,ui.dep_ID_field_Asset.text()))
 
 
     

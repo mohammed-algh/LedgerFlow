@@ -61,20 +61,34 @@ class FixedAssetManagement(QWidget):
         """Return a list of all fixed assets."""
         return self.load_from_database()
 
-    def get_asset(self,ui, id: int):
+    def get_asset(self, id: int):
         """Return a fixed asset by ID."""
         assets = self.get_assets()
         for asset in assets:
             if asset["id"] == id:
-                searched_asset = asset
-                ui.name_field_Asset.setText(searched_asset["name"])
-                ui.price_field_Asset.setValue(float(searched_asset["purchase_price"]))
-                ui.sal_val_field_Asset.setValue(float(searched_asset["salvage_value"]))
-                ui.year_field_Asset.setValue(float(searched_asset["life_years"]))
-                ui.date_field_Asset.date().toString("yyyy-MM-dd")
-                date = QDate.fromString(searched_asset["purchase_date"], "yyyy-MM-dd")
-                ui.date_field_Asset.setDate(date)
+                return asset
         return None
+    
+    def get_asset_to_print(self, ui, id_str: str):
+        """Return a fixed asset by ID."""
+        try:
+            if not id_str:
+                raise ValueError("ID field is empty")
+            id = int(id_str)
+            searched_asset = self.get_asset(id)
+            ui.name_field_Asset.setText(searched_asset["name"])
+            ui.price_field_Asset.setValue(float(searched_asset["purchase_price"]))
+            ui.sal_val_field_Asset.setValue(float(searched_asset["salvage_value"]))
+            ui.year_field_Asset.setValue(float(searched_asset["life_years"]))
+            ui.date_field_Asset.date().toString("yyyy-MM-dd")
+            date = QDate.fromString(searched_asset["purchase_date"], "yyyy-MM-dd")
+            ui.date_field_Asset.setDate(date)
+        except ValueError as e:
+            QMessageBox.warning(self, "Invalid ID", str(e))
+        except Exception as e:
+            QMessageBox.warning(self, "Asset Not Found", "There is no asset with given ID.")
+
+        
 
     def get_total_depreciation(self, id: int):
         """Return the total depreciation of a fixed asset by ID."""
@@ -85,20 +99,39 @@ class FixedAssetManagement(QWidget):
         years = (datetime.date.today() - purchase_date).days / 365
         depreciation = (asset["purchase_price"] / float(asset["life_years"])) * years
         return round(depreciation)
+    
+    def get_one_asset_depreciation_to_print(self,ui, id_str: str):
+        """Return the depreciation of a fixed asset by ID and print."""
+        try:
+            if not id_str:
+                raise ValueError("ID field is empty")
+            id = int(id_str)
+            asset = self.get_asset(id)
+            purchase_date = datetime.datetime.strptime(asset["purchase_date"], "%Y-%m-%d").date()
+            years = (datetime.date.today() - purchase_date).days / 365
+            depreciation = (asset["purchase_price"] / float(asset["life_years"])) * years
+            dep_value = round(depreciation)
+            ui.dep_Value.setText("$"+str(dep_value))
+        except ValueError as e:
+            QMessageBox.warning(self, "Invalid ID", str(e))
+        except Exception as e:
+            QMessageBox.warning(self, "Asset Not Found", "There is no asset with given ID.")
 
     def print_report(self, config) -> None:
         """Generate and print a PDF report of all fixed assets and their depreciation."""
-    
-        html = "<h1>Fixed Asset Management Report</h1>\n"
-        html += "<h2>Fixed Assets</h2>\n"
-        assets = self.load_from_database()
-        for asset in assets:
-            html += f"<p><b>ID:</b> {asset['id']}<br><b>Name:</b> {asset['name']}<br><b>Purchase Date:</b> {asset['purchase_date']}<br><b>Purchase Price:</b> ${asset['purchase_price']}<br><b>Salvage Value:</b> ${asset['salvage_value']}<br><b>Life (years):</b> {asset['life_years']}<br><b>Total Depreciation:</b> ${self.get_total_depreciation(asset['id'])}</p>\n"
-        pdfkit.from_string(html, 'fixed_asset_report.pdf', configuration=config)
         try:
-            subprocess.run(['start', '', 'fixed_asset_report.pdf'], shell=True)
-        except:
-            print(f"Unable to open the PDF file: {'fixed_asset_report.pdf'}")
+            html = "<h1>Fixed Asset Management Report</h1>\n"
+            html += "<h2>Fixed Assets</h2>\n"
+            assets = self.load_from_database()
+            for asset in assets:
+                html += f"<p><b>ID:</b> {asset['id']}<br><b>Name:</b> {asset['name']}<br><b>Purchase Date:</b> {asset['purchase_date']}<br><b>Purchase Price:</b> ${asset['purchase_price']}<br><b>Salvage Value:</b> ${asset['salvage_value']}<br><b>Life (years):</b> {asset['life_years']}<br><b>Total Depreciation:</b> ${self.get_total_depreciation(asset['id'])}</p>\n"
+            pdfkit.from_string(html, 'fixed_asset_report.pdf', configuration=config)
+            try:
+                subprocess.run(['start', '', 'income_expense_report.pdf'], shell=True)
+            except:
+                QMessageBox.warning(self, "Failed Open Report", "Report cannot be opened.")
+        except Exception as e:
+            QMessageBox.warning(self, "Report Generation", "No assets to be generated.")
        
     def save_to_database(self, fixed_asset) -> None:
         """Save all fixed_assets to the database."""
