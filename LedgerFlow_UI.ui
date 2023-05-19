@@ -23,7 +23,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>2</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="page_1">
          <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1321,7 +1321,26 @@
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_10">
             <item>
-             <widget class="QListView" name="Tax_List"/>
+             <widget class="QLabel" name="label_29">
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Taxable Transactions</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableView" name="Tax_List">
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_21">
@@ -1333,7 +1352,7 @@
                  </font>
                 </property>
                 <property name="text">
-                 <string>Taxable Income:</string>
+                 <string>Tax Rate:</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -1341,17 +1360,22 @@
                </widget>
               </item>
               <item>
-               <widget class="QLabel" name="Taxable_Income_Value">
-                <property name="font">
-                 <font>
-                  <pointsize>12</pointsize>
-                 </font>
-                </property>
+               <widget class="QLabel" name="label_30">
                 <property name="text">
-                 <string>0</string>
+                 <string>%</string>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </widget>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="tax_rate">
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="maximum">
+                 <double>100.000000000000000</double>
+                </property>
+                <property name="value">
+                 <double>15.000000000000000</double>
                 </property>
                </widget>
               </item>
@@ -1368,59 +1392,22 @@
                 </property>
                </spacer>
               </item>
+              <item>
+               <widget class="QPushButton" name="tax_refresh_Button">
+                <property name="text">
+                 <string>Refresh</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_22">
-              <item>
-               <widget class="QLabel" name="label_30">
-                <property name="font">
-                 <font>
-                  <pointsize>12</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>Total Tax:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="Total_Tax_Value">
-                <property name="font">
-                 <font>
-                  <pointsize>12</pointsize>
-                 </font>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+             <layout class="QHBoxLayout" name="horizontalLayout_22"/>
             </item>
             <item>
              <widget class="QPushButton" name="print_tax_Button">
               <property name="text">
-               <string>Print</string>
+               <string>Generate Tax Report</string>
               </property>
              </widget>
             </item>

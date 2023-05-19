@@ -46,7 +46,7 @@ class FixedAssetManagement(QWidget):
         elif datetime.datetime.strptime(purchase_date, "%Y-%m-%d").date() > datetime.date.today():
             QMessageBox.warning(self, "Invalid Date", "Date cannot be in the future.")
         elif purchase_price <= 0 or salvage_value <= 0 or life_years <= 0:
-            QMessageBox.warning(self, "Invalid Amount", "price or salvage value must be greater than zero.")
+            QMessageBox.warning(self, "Invalid Amount", "price, salvage value, or life years must be greater than zero.")
         else:
             asset = {"name": name,
                  "purchase_date": datetime.datetime.strptime(purchase_date, '%Y-%m-%d').date(),

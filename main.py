@@ -5,7 +5,6 @@ from Tax_Management import TaxManagement
 from Fixed_Asset_Management import FixedAssetManagement
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
-from PyQt5.QtWidgets import QMessageBox
 from layout import Ui_MainWindow
 config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf/bin/wkhtmltopdf.exe')
 
@@ -28,7 +27,10 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
+    ##################################################################################
     ############################## Moving between pages ##############################
+    ##################################################################################
+
     ui.In_ex_Button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(1))
     ui.fix_asset_Button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(2))
     ui.tax_Button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(3))
@@ -50,7 +52,10 @@ if __name__ == "__main__":
     ui.pay_fixed.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(4))
     ui.payroll_tax.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(4))
 
+    ###################################################################################
     ############################## Income & Expense Page ##############################
+    ###################################################################################
+
     current_date = QtCore.QDate.currentDate()
     ui.in_ex_date.setDate(current_date)
     ui.in_ex_date_start.setDate(current_date)
@@ -84,8 +89,10 @@ if __name__ == "__main__":
     ui.Transactions_tableView.setColumnWidth(3, 85)  # Amount column width
     ui.Transactions_tableView.setColumnWidth(4, 52)  # Type column width
 
-
+    #########################################################################################
     ############################## Fixed Asset Management Page ##############################
+    #########################################################################################
+
     ui.date_field_Asset.setDate(current_date)
     # Create the table
     try:
@@ -139,7 +146,48 @@ if __name__ == "__main__":
     ui.dep_search_Button.clicked.connect(lambda: FixedAssetManagement().get_one_asset_depreciation_to_print(ui,ui.dep_ID_field_Asset.text()))
 
 
+    #################################################################################
+    ############################## Tax Management Page ##############################
+    #################################################################################
     
+    # Create the table
+    numb = 15.0
+    try:
+        model = QStandardItemModel()
+        model.setColumnCount(5)
+        model.setHorizontalHeaderLabels(["ID", "Date", "Description", "Amount", "Type"])
+        size = len(TaxManagement(1).get_income())
+        for row, transaction in enumerate(TaxManagement(1).get_income()):
+                            model.appendRow([
+                                QStandardItem(str(transaction['id'])),
+                                QStandardItem(transaction['date']),
+                                QStandardItem(transaction['description']),
+                                QStandardItem(str(transaction['amount'])),
+                                QStandardItem(transaction['type']),
+                                
+                            ])
+
+        ui.Tax_List.setModel(model)
+        # Set the width of the columns
+        ui.Tax_List.setColumnWidth(0, 50)  # ID column width
+        ui.Tax_List.setColumnWidth(1, 200)  # Name column width
+        ui.Tax_List.setColumnWidth(2, 317)  # Date column width
+        if size <=5:
+            ui.Tax_List.setColumnWidth(3, 100)  # Price column width
+        else:
+            ui.Tax_List.setColumnWidth(3, 83)  # Price column width
+        ui.Tax_List.setColumnWidth(4, 100)  # Sal_val column width
+        ui.Tax_List.setColumnWidth(5, 100)  # Sal_val column width
+    except Exception as e:
+            None
+    
+    #Refresh Table
+    ui.tax_refresh_Button.clicked.connect(lambda: TaxManagement(ui.tax_rate.value()).update_table(ui))
+
+    #Generate Tax Report
+    ui.print_tax_Button.clicked.connect(lambda: TaxManagement(ui.tax_rate.value()).print_report(config))
+    #############################################################################
     ############################## Show MainWindow ##############################
+    #############################################################################
     MainWindow.show()
     sys.exit(app.exec_())
