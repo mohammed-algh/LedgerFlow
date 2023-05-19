@@ -87,21 +87,7 @@ if __name__ == "__main__":
 
     ############################## Fixed Asset Management Page ##############################
     ui.date_field_Asset.setDate(current_date)
-    #Add a new transaction
-    ui.add_Asset_Button.clicked.connect(lambda: FixedAssetManagement().add_asset(
-        ui.name_field_Asset.text(),
-        ui.price_field_Asset.value(),
-        ui.sal_val_field_Asset.value(),
-        ui.year_field_Asset.value(),
-        ui.date_field_Asset.date().toString("yyyy-MM-dd")),
-        )
-    #Refresh Table
-    ui.asset_refresh_Button.clicked.connect(lambda: FixedAssetManagement().update_table(ui))
-    #Generate a Report
-    ui.print_Asset_Button.clicked.connect(lambda: FixedAssetManagement().print_report(config))
-
-
-    # Create the model
+    # Create the table
     try:
         model = QStandardItemModel()
         model.setColumnCount(6)
@@ -130,7 +116,23 @@ if __name__ == "__main__":
         ui.Asset_List.setColumnWidth(5, 30)  # Life years column width
     except Exception as e:
             None
+    #Add a new transaction
+    ui.add_Asset_Button.clicked.connect(lambda: FixedAssetManagement().add_asset(
+        ui.name_field_Asset.text(),
+        ui.price_field_Asset.value(),
+        ui.sal_val_field_Asset.value(),
+        ui.year_field_Asset.value(),
+        ui.date_field_Asset.date().toString("yyyy-MM-dd")),
+        )
+    #Search for an Asset
+    ui.search_Asset_Button.clicked.connect(lambda: FixedAssetManagement().get_asset(ui,int(ui.ID_field_Asset.text())))
+    #Refresh Table
+    ui.asset_refresh_Button.clicked.connect(lambda: FixedAssetManagement().update_table(ui))
+    #Generate a Report
+    ui.print_Asset_Button.clicked.connect(lambda: FixedAssetManagement().print_report(config))
 
 
+    
+    ############################## Show MainWindow ##############################
     MainWindow.show()
     sys.exit(app.exec_())

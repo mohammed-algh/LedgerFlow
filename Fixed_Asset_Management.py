@@ -5,6 +5,7 @@ import sqlite3
 from PyQt5.QtWidgets import QMessageBox, QWidget
 import subprocess
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt5.QtCore import QDate
 
 class FixedAssetManagement(QWidget):
     def update_table(self,ui) -> None:
@@ -60,12 +61,19 @@ class FixedAssetManagement(QWidget):
         """Return a list of all fixed assets."""
         return self.load_from_database()
 
-    def get_asset(self, id: int):
+    def get_asset(self,ui, id: int):
         """Return a fixed asset by ID."""
         assets = self.get_assets()
         for asset in assets:
             if asset["id"] == id:
-                return asset
+                searched_asset = asset
+                ui.name_field_Asset.setText(searched_asset["name"])
+                ui.price_field_Asset.setValue(float(searched_asset["purchase_price"]))
+                ui.sal_val_field_Asset.setValue(float(searched_asset["salvage_value"]))
+                ui.year_field_Asset.setValue(float(searched_asset["life_years"]))
+                ui.date_field_Asset.date().toString("yyyy-MM-dd")
+                date = QDate.fromString(searched_asset["purchase_date"], "yyyy-MM-dd")
+                ui.date_field_Asset.setDate(date)
         return None
 
     def get_total_depreciation(self, id: int):
