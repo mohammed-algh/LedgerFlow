@@ -193,6 +193,43 @@ if __name__ == "__main__":
     ui.employee_s_date.setDate(current_date)
 
 
+    #Create the table
+    model = QStandardItemModel()
+    model.setColumnCount(4)
+    model.setHorizontalHeaderLabels(["ID", "Name", "Salary", "Start Date"])
+    size = len(PayrollManagement().get_employees())
+    for row, employee in enumerate(PayrollManagement().get_employees()):
+                        model.appendRow([
+                            QStandardItem(str(employee['id'])),
+                            QStandardItem(employee['name']),
+                            QStandardItem(str(employee['salary'])),
+                            QStandardItem(employee['start_date'])
+                        ])
+
+    ui.Employee_List.setModel(model)
+    # Set the width of the columns
+    ui.Employee_List.setColumnWidth(0, 10)  # ID column width
+    if size <=6:
+        ui.Employee_List.setColumnWidth(1, 150)  # Name column width
+    else:
+        ui.Employee_List.setColumnWidth(1, 133)  # Name column width
+    
+    ui.Employee_List.setColumnWidth(2, 95)  # Salary column width
+    ui.Employee_List.setColumnWidth(3, 80)  # Start date column width
+    
+    #Add a new employee
+    ui.add_emp_Button.clicked.connect(lambda: PayrollManagement().add_employee(ui.name_emp_field.text(), ui.employee_sal_field.value(),ui.in_ex_date.date().toString("yyyy-MM-dd")))
+    
+    #Delete an employee
+    ui.remove_emp_Button.clicked.connect(lambda: PayrollManagement().terminate_employee(ui.name_emp_field.text()))
+
+    #Search for an employee
+    ui.remove_emp_Button.clicked.connect(lambda: PayrollManagement().get_employee(ui.name_emp_field.text()))
+    
+    #Refresh the employees list
+    ui.refresh_emp_Button.clicked.connect(lambda: print(PayrollManagement().get_employees()))
+
+
     #############################################################################
     ############################## Show MainWindow ##############################
     #############################################################################

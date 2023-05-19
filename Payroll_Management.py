@@ -2,20 +2,30 @@ from typing import List, Dict
 import datetime
 import pdfkit
 import sqlite3
+from PyQt5.QtWidgets import QMessageBox, QWidget
+import subprocess
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
+class PayrollManagement(QWidget):
 
-class PayrollManagement:
-
-    def add_employee(self, name: str, salary: float, start_date=str(datetime.date.today())) -> None:
+    def add_employee(self, name: str, salary: float, start_date: str) -> None:
         """Add an employee."""
-        employee = {"name": name,
+        if name=="":
+            QMessageBox.warning(self, "Missing Input", "Please provide a name for the employee.")
+        elif salary <= 0:
+            QMessageBox.warning(self, "Invalid Salary", "Salary must be greater than zero.")
+        else:
+            employee = {"name": name,
                     "salary": salary,
                     "start_date": datetime.datetime.strptime(start_date, '%Y-%m-%d').date(),
                     }
-        self.save_to_database(employee)
+            self.save_to_database(employee)
+            QMessageBox.information(self, "Employee Hired!", "Congratulations! A new employee has been hired.")
+        
 
-    def terminate_employee(self, employee_id: int) -> bool:
+    def terminate_employee(self, id: str) -> bool:
         """Remove a employees from the database using its ID."""
+        employee_id = int(id)
         with sqlite3.connect('ledgerflow.db') as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM employees WHERE id = ?", (employee_id,))
