@@ -1741,16 +1741,16 @@
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_28">
                    <item>
-                    <widget class="QPushButton" name="remove_emp_Button">
+                    <widget class="QPushButton" name="search_emp_Button">
                      <property name="text">
-                      <string>Remove</string>
+                      <string>Search</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="search_emp_Button">
+                    <widget class="QPushButton" name="remove_emp_Button">
                      <property name="text">
-                      <string>Search</string>
+                      <string>Remove</string>
                      </property>
                     </widget>
                    </item>

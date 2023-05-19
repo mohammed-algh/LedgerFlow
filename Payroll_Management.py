@@ -7,6 +7,32 @@ import subprocess
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 class PayrollManagement(QWidget):
+    def update_table(self,ui) -> None:
+        try:
+            model = QStandardItemModel()
+            model.setColumnCount(4)
+            model.setHorizontalHeaderLabels(["ID", "Name", "Salary", "Start Date"])
+            size = len(self.get_employees())
+            for row, employee in enumerate(self.get_employees()):
+                                model.appendRow([
+                                    QStandardItem(str(employee['id'])),
+                                    QStandardItem(employee['name']),
+                                    QStandardItem(str(employee['salary'])),
+                                    QStandardItem(employee['start_date'])
+                                ])
+
+            ui.Employee_List.setModel(model)
+            # Set the width of the columns
+            ui.Employee_List.setColumnWidth(0, 10)  # ID column width
+            if size <=6:
+                ui.Employee_List.setColumnWidth(1, 150)  # Name column width
+            else:
+                ui.Employee_List.setColumnWidth(1, 133)  # Name column width
+            
+            ui.Employee_List.setColumnWidth(2, 95)  # Salary column width
+            ui.Employee_List.setColumnWidth(3, 80)  # Start date column width
+        except Exception as e:
+                QMessageBox.warning(self, "Invalid Refresh", "No employees are hired in the company.")
 
     def add_employee(self, name: str, salary: float, start_date: str) -> None:
         """Add an employee."""
@@ -64,14 +90,20 @@ class PayrollManagement(QWidget):
 
     def print_report(self, config) -> None:
         """Generate and print a PDF report of all employees and their salaries."""
-        html = "<h1>Payroll Management Report</h1>\n"
-        employees = self.load_from_database()
+        try:
+            html = "<h1>Payroll Management Report</h1>\n"
+            employees = self.load_from_database()
 
-        for employee in employees:
-            html += f"<p><b>ID:</b> {employee['id']}<br><b>Name:</b> {employee['name']}<br><b>Salary:</b> ${employee['salary']}</p>\n"
-        html += f"<h2>Total Payroll: ${self.get_total_payroll()}</h2>\n"
-        pdfkit.from_string(html, 'payroll_report.pdf', configuration=config)
-
+            for employee in employees:
+                html += f"<p><b>ID:</b> {employee['id']}<br><b>Name:</b> {employee['name']}<br><b>Salary:</b> ${employee['salary']}</p>\n"
+            html += f"<h2>Total Payroll: ${self.get_total_payroll()}</h2>\n"
+            pdfkit.from_string(html, 'payroll_report.pdf', configuration=config)
+            try:
+                subprocess.run(['start', '', 'payroll_report.pdf'], shell=True)
+            except:
+                QMessageBox.warning(self, "Failed Open Report", "Report cannot be opened.")
+        except Exception as e:
+            QMessageBox.warning(self, "Report Generation", "No employees are hired to generate a payroll report for them.")
     def save_to_database(self, employee) -> None:
         """Save all employees to the database."""
         conn = sqlite3.connect('ledgerflow.db')
