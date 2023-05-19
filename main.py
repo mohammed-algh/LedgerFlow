@@ -4,6 +4,8 @@ from Payroll_Management import PayrollManagement
 from Tax_Management import TaxManagement
 from Fixed_Asset_Management import FixedAssetManagement
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QStandardItemModel
+
 
 config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf/bin/wkhtmltopdf.exe')
 
@@ -160,8 +162,10 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_2.addWidget(self.label_4)
         self.in_ex_date = QtWidgets.QDateEdit(self.frame)
-        self.in_ex_date.setCurrentSection(QtWidgets.QDateTimeEdit.MonthSection)
+        self.in_ex_date.setCurrentSection(QtWidgets.QDateTimeEdit.YearSection)
         self.in_ex_date.setCalendarPopup(True)
+        self.in_ex_date.setCurrentSectionIndex(0)
+        self.in_ex_date.setDate(QtCore.QDate(2000, 2, 1))
         self.in_ex_date.setObjectName("in_ex_date")
         self.horizontalLayout_2.addWidget(self.in_ex_date)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -189,9 +193,10 @@ class Ui_MainWindow(object):
         self.label_10.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_4.addWidget(self.label_10)
-        self.in_ex_amount = QtWidgets.QSpinBox(self.frame)
-        self.in_ex_amount.setMaximum(999999999)
-        self.in_ex_amount.setSingleStep(10)
+        self.in_ex_amount = QtWidgets.QDoubleSpinBox(self.frame)
+        self.in_ex_amount.setAccelerated(True)
+        self.in_ex_amount.setMaximum(999999999.99)
+        self.in_ex_amount.setSingleStep(50.0)
         self.in_ex_amount.setObjectName("in_ex_amount")
         self.horizontalLayout_4.addWidget(self.in_ex_amount)
         self.verticalLayout_2.addLayout(self.horizontalLayout_4)
@@ -234,7 +239,11 @@ class Ui_MainWindow(object):
         self.label_14.setObjectName("label_14")
         self.horizontalLayout_6.addWidget(self.label_14)
         self.in_ex_type2 = QtWidgets.QComboBox(self.frame_2)
+        self.in_ex_type2.setCurrentText("")
         self.in_ex_type2.setObjectName("in_ex_type2")
+        self.in_ex_type2.addItem("")
+        self.in_ex_type2.setItemText(0, "")
+        self.in_ex_type2.addItem("")
         self.in_ex_type2.addItem("")
         self.in_ex_type2.addItem("")
         self.horizontalLayout_6.addWidget(self.in_ex_type2)
@@ -245,25 +254,37 @@ class Ui_MainWindow(object):
         self.label_15.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.label_15.setObjectName("label_15")
         self.horizontalLayout_6.addWidget(self.label_15)
-        self.in_ex_date2 = QtWidgets.QDateEdit(self.frame_2)
-        self.in_ex_date2.setCurrentSection(QtWidgets.QDateTimeEdit.MonthSection)
-        self.in_ex_date2.setCalendarPopup(True)
-        self.in_ex_date2.setObjectName("in_ex_date2")
-        self.horizontalLayout_6.addWidget(self.in_ex_date2)
+        self.in_ex_date_start = QtWidgets.QDateEdit(self.frame_2)
+        self.in_ex_date_start.setCurrentSection(QtWidgets.QDateTimeEdit.YearSection)
+        self.in_ex_date_start.setCalendarPopup(True)
+        self.in_ex_date_start.setObjectName("in_ex_date_start")
+        self.horizontalLayout_6.addWidget(self.in_ex_date_start)
+        self.label_27 = QtWidgets.QLabel(self.frame_2)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_27.setFont(font)
+        self.label_27.setObjectName("label_27")
+        self.horizontalLayout_6.addWidget(self.label_27)
+        self.in_ex_date_end = QtWidgets.QDateEdit(self.frame_2)
+        self.in_ex_date_end.setCalendarPopup(True)
+        self.in_ex_date_end.setObjectName("in_ex_date_end")
+        self.horizontalLayout_6.addWidget(self.in_ex_date_end)
+        self.checkBox = QtWidgets.QCheckBox(self.frame_2)
+        self.checkBox.setObjectName("checkBox")
+        self.horizontalLayout_6.addWidget(self.checkBox)
         self.verticalLayout_3.addLayout(self.horizontalLayout_6)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.Transactions_tableView = QtWidgets.QTableView(self.frame_2)
         self.Transactions_tableView.setObjectName("Transactions_tableView")
+        self.Transactions_tableView.verticalHeader().setVisible(False)
+        self.Transactions_tableView.verticalHeader().setHighlightSections(True)
         self.horizontalLayout.addWidget(self.Transactions_tableView)
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.show_trans_Button = QtWidgets.QPushButton(self.frame_2)
         self.show_trans_Button.setObjectName("show_trans_Button")
         self.verticalLayout.addWidget(self.show_trans_Button)
-        self.print_trans_Button = QtWidgets.QPushButton(self.frame_2)
-        self.print_trans_Button.setObjectName("print_trans_Button")
-        self.verticalLayout.addWidget(self.print_trans_Button)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
@@ -282,6 +303,9 @@ class Ui_MainWindow(object):
         self.remove_trans_Button.setObjectName("remove_trans_Button")
         self.horizontalLayout_8.addWidget(self.remove_trans_Button)
         self.verticalLayout_3.addLayout(self.horizontalLayout_8)
+        self.print_trans_Button = QtWidgets.QPushButton(self.frame_2)
+        self.print_trans_Button.setObjectName("print_trans_Button")
+        self.verticalLayout_3.addWidget(self.print_trans_Button)
         self.verticalLayout_4.addWidget(self.splitter_2)
         spacerItem8 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout_4.addItem(spacerItem8)
@@ -835,6 +859,7 @@ class Ui_MainWindow(object):
         self.payroll_in_ex.setText(_translate("MainWindow", "Payroll Management"))
         self.label_12.setText(_translate("MainWindow", "Add Income/Expense"))
         self.label_4.setText(_translate("MainWindow", "Date"))
+        self.in_ex_date.setDisplayFormat(_translate("MainWindow", "yyyy-MM-dd"))
         self.label_9.setText(_translate("MainWindow", "Type"))
         self.in_ex_type.setItemText(0, _translate("MainWindow", "Income"))
         self.in_ex_type.setItemText(1, _translate("MainWindow", "Expense"))
@@ -843,13 +868,18 @@ class Ui_MainWindow(object):
         self.add_in_ex_Button.setText(_translate("MainWindow", "Add"))
         self.label_13.setText(_translate("MainWindow", "Transactions"))
         self.label_14.setText(_translate("MainWindow", "Type"))
-        self.in_ex_type2.setItemText(0, _translate("MainWindow", "Income"))
-        self.in_ex_type2.setItemText(1, _translate("MainWindow", "Expense"))
-        self.label_15.setText(_translate("MainWindow", "Date"))
+        self.in_ex_type2.setItemText(1, _translate("MainWindow", "All"))
+        self.in_ex_type2.setItemText(2, _translate("MainWindow", "Income"))
+        self.in_ex_type2.setItemText(3, _translate("MainWindow", "Expense"))
+        self.label_15.setText(_translate("MainWindow", "Date Start"))
+        self.in_ex_date_start.setDisplayFormat(_translate("MainWindow", "yyyy-MM-dd"))
+        self.label_27.setText(_translate("MainWindow", "Date End"))
+        self.in_ex_date_end.setDisplayFormat(_translate("MainWindow", "yyyy-MM-dd"))
+        self.checkBox.setText(_translate("MainWindow", "Include date"))
         self.show_trans_Button.setText(_translate("MainWindow", "Show"))
-        self.print_trans_Button.setText(_translate("MainWindow", "Print"))
         self.label_16.setText(_translate("MainWindow", "Transaction ID"))
         self.remove_trans_Button.setText(_translate("MainWindow", "Remove"))
+        self.print_trans_Button.setText(_translate("MainWindow", "Generate Full Report"))
         self.label_6.setText(_translate("MainWindow", "Fixed Asset Management"))
         self.home_fixed.setText(_translate("MainWindow", "Homepage"))
         self.in_ex_fixed.setText(_translate("MainWindow", "Income/Expense Tracking"))
@@ -859,6 +889,7 @@ class Ui_MainWindow(object):
         self.label_17.setText(_translate("MainWindow", "Add/Search Fixed Assets"))
         self.label_18.setText(_translate("MainWindow", "Name"))
         self.label_19.setText(_translate("MainWindow", "Date"))
+        self.date_field_Asset.setDisplayFormat(_translate("MainWindow", "yyyy-MM-dd"))
         self.label_20.setText(_translate("MainWindow", "Price"))
         self.label_21.setText(_translate("MainWindow", "Salvage Value"))
         self.label_22.setText(_translate("MainWindow", "Life Years"))
@@ -891,6 +922,7 @@ class Ui_MainWindow(object):
         self.label_32.setText(_translate("MainWindow", "Add/Remove Employee"))
         self.label_33.setText(_translate("MainWindow", "Name"))
         self.label_34.setText(_translate("MainWindow", "Start Date"))
+        self.employee_s_date.setDisplayFormat(_translate("MainWindow", "yyyy-MM-dd"))
         self.label_35.setText(_translate("MainWindow", "Salary"))
         self.add_emp_Button.setText(_translate("MainWindow", "Add"))
         self.label_36.setText(_translate("MainWindow", "Employee ID"))
@@ -913,7 +945,7 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
-    
+    #Moving between pages
     ui.In_ex_Button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(1))
     ui.fix_asset_Button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(2))
     ui.tax_Button.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(3))
@@ -934,5 +966,43 @@ if __name__ == "__main__":
     ui.payroll_in_ex.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(4))
     ui.pay_fixed.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(4))
     ui.payroll_tax.clicked.connect(lambda: ui.stackedWidget.setCurrentIndex(4))
+
+    #Income & Expense Page
+    current_date = QtCore.QDate.currentDate()
+    ui.in_ex_date.setDate(current_date)
+    ui.in_ex_date_start.setDate(current_date)
+    ui.in_ex_date_end.setDate(current_date)
+
+    #Add a new transaction
+    ui.add_in_ex_Button.clicked.connect(lambda: IncomeExpenseTracking().add_transaction(ui.in_ex_date.date().toString("yyyy-MM-dd"),ui.in_ex_type.currentText(), ui.in_ex_amount.value(), ui.in_ex_desc.toPlainText()))
+    
+    #Show Table
+    ui.show_trans_Button.clicked.connect(lambda: IncomeExpenseTracking().updateTable(
+        ui,
+        ui.in_ex_type2.currentText(),
+        ui.checkBox.isChecked(),
+        ui.in_ex_date_start.date().toString("yyyy-MM-dd"),
+        ui.in_ex_date_end.date().toString("yyyy-MM-dd")))
+
+    #Remove a transaction by ID
+    ui.remove_trans_Button.clicked.connect(lambda: IncomeExpenseTracking().remove_transaction(ui.trans_ID_field.text()))
+    #Test#ui.remove_trans_Button.clicked.connect(lambda: print(IncomeExpenseTracking().get_income_report(ui.in_ex_date.date().toString("yyyy-MM-dd"),ui.in_ex_date.date().toString("yyyy-MM-dd"))))
+
+    
+    #Generate a report
+    ui.print_trans_Button.clicked.connect(lambda: IncomeExpenseTracking().print_report(config))
+
+
+    #Initializing the table
+    model = QStandardItemModel()
+    model.setColumnCount(5)
+    model.setHorizontalHeaderLabels(["ID", "Date", "Description", "Amount", "Type"])
+    ui.Transactions_tableView.setModel(model)
+    ui.Transactions_tableView.setColumnWidth(0, 30)  # ID column width
+    ui.Transactions_tableView.setColumnWidth(1, 70)  # Date column width
+    ui.Transactions_tableView.setColumnWidth(2, 180)  # Description column width
+    ui.Transactions_tableView.setColumnWidth(3, 85)  # Amount column width
+    ui.Transactions_tableView.setColumnWidth(4, 52)  # Type column width
+
     MainWindow.show()
     sys.exit(app.exec_())

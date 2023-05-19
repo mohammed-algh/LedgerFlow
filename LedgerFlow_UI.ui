@@ -23,7 +23,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget">
         <property name="currentIndex">
-         <number>4</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="page_1">
          <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -349,10 +349,23 @@
                 <item>
                  <widget class="QDateEdit" name="in_ex_date">
                   <property name="currentSection">
-                   <enum>QDateTimeEdit::MonthSection</enum>
+                   <enum>QDateTimeEdit::YearSection</enum>
+                  </property>
+                  <property name="displayFormat">
+                   <string>yyyy-MM-dd</string>
                   </property>
                   <property name="calendarPopup">
                    <bool>true</bool>
+                  </property>
+                  <property name="currentSectionIndex">
+                   <number>0</number>
+                  </property>
+                  <property name="date">
+                   <date>
+                    <year>2000</year>
+                    <month>2</month>
+                    <day>1</day>
+                   </date>
                   </property>
                  </widget>
                 </item>
@@ -409,12 +422,15 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="in_ex_amount">
+                 <widget class="QDoubleSpinBox" name="in_ex_amount">
+                  <property name="accelerated">
+                   <bool>true</bool>
+                  </property>
                   <property name="maximum">
-                   <number>999999999</number>
+                   <double>999999999.990000009536743</double>
                   </property>
                   <property name="singleStep">
-                   <number>10</number>
+                   <double>50.000000000000000</double>
                   </property>
                  </widget>
                 </item>
@@ -493,6 +509,19 @@
                 </item>
                 <item>
                  <widget class="QComboBox" name="in_ex_type2">
+                  <property name="currentText">
+                   <string notr="true"/>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>All</string>
+                   </property>
+                  </item>
                   <item>
                    <property name="text">
                     <string>Income</string>
@@ -513,7 +542,7 @@
                    </font>
                   </property>
                   <property name="text">
-                   <string>Date</string>
+                   <string>Date Start</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -521,12 +550,44 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QDateEdit" name="in_ex_date2">
+                 <widget class="QDateEdit" name="in_ex_date_start">
                   <property name="currentSection">
-                   <enum>QDateTimeEdit::MonthSection</enum>
+                   <enum>QDateTimeEdit::YearSection</enum>
+                  </property>
+                  <property name="displayFormat">
+                   <string>yyyy-MM-dd</string>
                   </property>
                   <property name="calendarPopup">
                    <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_27">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Date End</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QDateEdit" name="in_ex_date_end">
+                  <property name="displayFormat">
+                   <string>yyyy-MM-dd</string>
+                  </property>
+                  <property name="calendarPopup">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox">
+                  <property name="text">
+                   <string>Include date</string>
                   </property>
                  </widget>
                 </item>
@@ -535,7 +596,14 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <item>
-                 <widget class="QTableView" name="Transactions_tableView"/>
+                 <widget class="QTableView" name="Transactions_tableView">
+                  <attribute name="verticalHeaderVisible">
+                   <bool>false</bool>
+                  </attribute>
+                  <attribute name="verticalHeaderHighlightSections">
+                   <bool>true</bool>
+                  </attribute>
+                 </widget>
                 </item>
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout">
@@ -543,13 +611,6 @@
                    <widget class="QPushButton" name="show_trans_Button">
                     <property name="text">
                      <string>Show</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="print_trans_Button">
-                    <property name="text">
-                     <string>Print</string>
                     </property>
                    </widget>
                   </item>
@@ -585,6 +646,13 @@
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="print_trans_Button">
+                <property name="text">
+                 <string>Generate Full Report</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -808,6 +876,9 @@
                       </item>
                       <item>
                        <widget class="QDateEdit" name="date_field_Asset">
+                        <property name="displayFormat">
+                         <string>yyyy-MM-dd</string>
+                        </property>
                         <property name="calendarPopup">
                          <bool>true</bool>
                         </property>
@@ -1533,6 +1604,9 @@
                       </item>
                       <item>
                        <widget class="QDateEdit" name="employee_s_date">
+                        <property name="displayFormat">
+                         <string>yyyy-MM-dd</string>
+                        </property>
                         <property name="calendarPopup">
                          <bool>true</bool>
                         </property>
