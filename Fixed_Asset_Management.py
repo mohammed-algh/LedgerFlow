@@ -65,16 +65,15 @@ class FixedAssetManagement(QWidget):
         """Return a fixed asset by ID."""
         assets = self.get_assets()
         for asset in assets:
-            if asset["id"] == id:
+            if asset["id"] == int(id):
                 return asset
         return None
     
-    def get_asset_to_print(self, ui, id_str: str):
+    def get_asset_to_print(self, ui, id: int):
         """Return a fixed asset by ID."""
         try:
-            if not id_str:
+            if not id:
                 raise ValueError("ID field is empty")
-            id = int(id_str)
             searched_asset = self.get_asset(id)
             ui.name_field_Asset.setText(searched_asset["name"])
             ui.price_field_Asset.setValue(float(searched_asset["purchase_price"]))
@@ -84,8 +83,6 @@ class FixedAssetManagement(QWidget):
             ui.date_field_Asset.setDate(date)
         except ValueError as e:
             QMessageBox.warning(self, "Invalid ID", str(e))
-        except Exception as e:
-            QMessageBox.warning(self, "Asset Not Found", "There is no asset with the given ID.")
 
         
 

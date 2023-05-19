@@ -50,15 +50,14 @@ class PayrollManagement(QWidget):
             QMessageBox.information(self, "Employee Hired!", "Congratulations! A new employee has been hired.")
         
 
-    def terminate_employee(self, id: str) -> bool:
+    def terminate_employee(self, id: int) -> bool:
         """Remove a employees from the database using its ID."""
         try:
             if not id:
                 raise ValueError("ID field is empty")
-            employee_id = int(id)
             with sqlite3.connect('ledgerflow.db') as conn:
                 cursor = conn.cursor()
-                cursor.execute("DELETE FROM employees WHERE id = ?", (employee_id,))
+                cursor.execute("DELETE FROM employees WHERE id = ?", (id,))
                 if cursor.rowcount == 0:
                     conn.commit()
                     QMessageBox.warning(self, "Employee Termination Failed!", "Employee ID does not exist.")
@@ -84,12 +83,12 @@ class PayrollManagement(QWidget):
                 return employee
         return None
     
-    def get_employee_to_print(self,ui, id: str):
+    def get_employee_to_print(self,ui, id: int):
         """Get employee to print"""
         try:
             if not id:
                 raise ValueError("ID field is empty")
-            employee = self.get_employee(int(id))
+            employee = self.get_employee(id)
             ui.name_emp_field.setText(employee["name"])
             ui.employee_sal_field.setValue(float(employee["salary"]))
             date = QDate.fromString(employee["start_date"], "yyyy-MM-dd")
