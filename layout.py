@@ -15,6 +15,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(805, 600)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("theme/icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -821,7 +824,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "LedgerFlow - Business Management Tool"))
         self.label.setText(_translate("MainWindow", "Welcome to LedgerFlow"))
         self.label_2.setText(_translate("MainWindow", "Your all-in-one financial powerhouse for seamless business accounting"))
         self.In_ex_Button.setText(_translate("MainWindow", "Income/Expense Tracking"))
