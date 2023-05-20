@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>LedgerFlow - Business Management Tool</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>theme/icon.png</normaloff>theme/icon.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_5">
