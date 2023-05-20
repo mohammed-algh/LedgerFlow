@@ -132,7 +132,7 @@ if __name__ == "__main__":
         ui.year_field_Asset.value(),
         ui.date_field_Asset.date().toString("yyyy-MM-dd")),
         )
-    FixedAssetManagement.get_assets()
+    
     #Search for an Asset
     ui.search_Asset_Button.clicked.connect(lambda: FixedAssetManagement().get_asset_to_print(ui,ui.ID_field_Asset.text()))
 
